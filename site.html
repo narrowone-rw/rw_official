@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RW Clan — Narrow.one</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:       #0b0c0f;
+      --bg2:      #111318;
+      --bg3:      #181b22;
+      --gold:     #c8a44a;
+      --gold-dim: #7a6228;
+      --crimson:  #b83232;
+      --cream:    #e8dfc8;
+      --muted:    #6b7080;
+      --border:   rgba(200,164,74,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 18px; line-height: 1.7;
+      overflow-x: hidden;
+    }
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem; height: 64px;
+      background: rgba(11,12,15,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Cinzel', serif; font-weight: 900; font-size: 1.4rem;
+      letter-spacing: .12em; color: var(--gold);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .nav-logo span { color: var(--cream); font-weight: 400; font-size: 1rem; }
+    nav ul { list-style: none; display: flex; gap: 1.8rem; }
+    nav ul li a {
+      font-family: 'Cinzel', serif; font-size: .65rem;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: var(--muted); transition: color .25s;
+    }
+    nav ul li a:hover { color: var(--gold); text-decoration: none; }
+    .nav-discord {
+      font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: .15em;
+      text-transform: uppercase; padding: .4rem 1.1rem;
+      border: 1px solid #5865f2; color: #7b8fff;
+      transition: background .25s, color .25s;
+    }
+    .nav-discord:hover { background: #5865f2; color: #fff; text-decoration: none; }
+
+    /* ── Hero ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center; padding: 6rem 1.5rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(184,50,50,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 50% 80%, rgba(200,164,74,0.06) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(200,164,74,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,164,74,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridDrift 20s linear infinite;
+    }
+    @keyframes gridDrift { from{transform:translateY(0)} to{transform:translateY(60px)} }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-tag {
+      display: inline-block; font-family: 'JetBrains Mono', monospace;
+      font-size: .72rem; letter-spacing: .25em; color: var(--gold-dim);
+      border: 1px solid var(--gold-dim); padding: .25rem .9rem;
+      margin-bottom: 1.8rem; animation: fadeUp .8s ease both;
+    }
+    .hero-title {
+      font-family: 'Cinzel', serif; font-weight: 900;
+      font-size: clamp(4rem, 14vw, 10rem); line-height: .92;
+      background: linear-gradient(170deg, #e8d8a0 0%, #c8a44a 45%, #7a5a28 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: fadeUp .8s .15s ease both;
+    }
+    .hero-sub {
+      font-family: 'Cinzel', serif; font-size: clamp(.85rem, 2vw, 1rem);
+      letter-spacing: .35em; color: var(--muted); margin-top: 1rem;
+      animation: fadeUp .8s .28s ease both;
+    }
+    .hero-divider {
+      width: 120px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 2.2rem auto; animation: fadeUp .8s .4s ease both;
+    }
+    .hero-desc {
+      max-width: 500px; margin: 0 auto;
+      font-size: 1.08rem; color: #9ea7b8; font-style: italic;
+      animation: fadeUp .8s .52s ease both;
+    }
+    .hero-cta {
+      margin-top: 2.5rem;
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      animation: fadeUp .8s .64s ease both;
+    }
+    .btn {
+      font-family: 'Cinzel', serif; font-size: .72rem; letter-spacing: .2em;
+      text-transform: uppercase; padding: .75rem 2rem;
+      border: 1px solid var(--gold); color: var(--gold);
+      background: transparent; cursor: pointer;
+      transition: background .25s, color .25s, box-shadow .25s; display: inline-block;
+    }
+    .btn:hover { background: var(--gold); color: #0b0c0f; box-shadow: 0 0 24px rgba(200,164,74,.35); text-decoration: none; }
+    .btn-ghost { border-color: var(--muted); color: var(--muted); }
+    .btn-ghost:hover { background: var(--muted); color: #0b0c0f; box-shadow: none; }
+    .btn-discord { border-color: #5865f2; color: #7b8fff; }
+    .btn-discord:hover { background: #5865f2; color: #fff; box-shadow: 0 0 20px rgba(88,101,242,.4); }
+    .arrow-deco {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .3rem;
+      animation: bounce 2.4s ease-in-out infinite; z-index: 2;
+    }
+    .arrow-deco span { display: block; width: 1px; height: 18px; background: linear-gradient(to bottom, var(--gold), transparent); }
+    .arrow-deco::after { content: '↓'; color: var(--gold-dim); font-size: .8rem; font-family: 'Cinzel', serif; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ── Shared ── */
+    section { padding: 7rem 1.5rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-tag { font-family: 'JetBrains Mono', monospace; font-size: .68rem; letter-spacing: .25em; color: var(--gold-dim); text-transform: uppercase; margin-bottom: .8rem; }
+    .section-title { font-family: 'Cinzel', serif; font-weight: 700; font-size: clamp(1.8rem, 4vw, 2.8rem); color: var(--cream); margin-bottom: 1rem; line-height: 1.15; }
+    .section-lead { color: #8a94a8; max-width: 600px; font-size: 1.05rem; margin-bottom: 3.5rem; }
+    .gold-line { width: 48px; height: 2px; background: var(--gold); margin-bottom: 2rem; }
+
+    /* ── About ── */
+    #about { background: var(--bg2); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .about-visual { position: relative; display: flex; justify-content: center; align-items: center; }
+    .rw-emblem {
+      width: 260px; height: 260px; border: 1px solid var(--border); border-radius: 50%;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      background: radial-gradient(circle at center, rgba(200,164,74,0.06), transparent 70%); position: relative;
+    }
+    .rw-emblem::before, .rw-emblem::after { content: ''; position: absolute; border-radius: 50%; border: 1px solid var(--border); }
+    .rw-emblem::before { inset: 12px; }
+    .rw-emblem::after  { inset: 28px; border-color: rgba(200,164,74,0.06); }
+    .rw-emblem .big-rw {
+      font-family: 'Cinzel', serif; font-weight: 900; font-size: 5rem;
+      background: linear-gradient(160deg, #e8d8a0, #c8a44a);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;
+    }
+    .rw-emblem .game-name { font-family: 'JetBrains Mono', monospace; font-size: .6rem; letter-spacing: .3em; color: var(--gold-dim); margin-top: .3rem; }
+    .orbit-ring { position: absolute; inset: -18px; border-radius: 50%; border: 1px dashed rgba(200,164,74,0.15); animation: spin 18s linear infinite; }
+    .orbit-dot { position: absolute; top: -4px; left: calc(50% - 4px); width: 8px; height: 8px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+    @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+    .about-text p { margin-bottom: 1.2rem; color: #9ea7b8; }
+    .tag-pill { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: .65rem; letter-spacing: .15em; padding: .2rem .7rem; border: 1px solid var(--border); color: var(--gold-dim); margin: .2rem .15rem; }
+    .about-links { margin-top: 2rem; display: flex; gap: .8rem; flex-wrap: wrap; }
+
+    /* ── Members ── */
+    #members { background: var(--bg); }
+    .rank-header { font-family: 'JetBrains Mono', monospace; font-size: .62rem; letter-spacing: .25em; text-transform: uppercase; padding: .4rem 0 .8rem; border-bottom-width: 1px; border-bottom-style: solid; margin-bottom: 1.2rem; }
+    .rank-leader  { color: var(--crimson); border-bottom-color: rgba(184,50,50,0.25); }
+    .rank-sub     { color: var(--gold);    border-bottom-color: rgba(200,164,74,0.2); }
+    .rank-member  { color: var(--muted);   border-bottom-color: var(--border); }
+    .members-leader-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+    .members-sub-row    { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.2rem; margin-bottom: 2.5rem; }
+    .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    .member-card {
+      background: var(--bg3); padding: 1.6rem 1.4rem;
+      position: relative; overflow: hidden;
+      border: 1px solid var(--border);
+      transition: border-color .3s, transform .3s; cursor: default;
+    }
+    .member-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); transform: scaleX(0); transition: transform .4s; }
+    .member-card:hover { border-color: var(--gold-dim); transform: translateY(-3px); }
+    .member-card:hover::before { transform: scaleX(1); }
+    .member-card.ldr { border-color: rgba(184,50,50,0.4); background: linear-gradient(135deg, #181b22 0%, rgba(184,50,50,0.06) 100%); }
+    .member-card.ldr::before { background: linear-gradient(90deg, transparent, var(--crimson), transparent); }
+    .member-card.sub { border-color: rgba(200,164,74,0.3); }
+    .member-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--bg); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.2rem; color: var(--gold); margin-bottom: .9rem; }
+    .ldr .member-avatar { border-color: rgba(184,50,50,0.5); color: #e07070; }
+    .sub .member-avatar { border-color: rgba(200,164,74,0.4); }
+    .member-name { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1rem; color: var(--cream); margin-bottom: .15rem; }
+    .member-alias { font-size: .82rem; color: var(--muted); margin-bottom: .4rem; font-family: 'JetBrains Mono', monospace; font-size: .7rem; }
+    .member-role { font-family: 'JetBrains Mono', monospace; font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; }
+    .member-role.leader { color: var(--crimson); }
+    .member-role.sub    { color: var(--gold); }
+    .member-mini { background: var(--bg3); padding: 1rem 1.1rem; display: flex; align-items: center; gap: .8rem; transition: background .2s; }
+    .member-mini:hover { background: var(--bg2); }
+    .mini-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: 'Cinzel', serif; font-weight: 700; font-size: .78rem; color: var(--muted); }
+    .mini-name { font-family: 'JetBrains Mono', monospace; font-size: .78rem; color: var(--cream); }
+
+    /* ── Events ── */
+    #events { background: var(--bg2); }
+    .events-list { display: flex; flex-direction: column; gap: 4rem; }
+    .event-item { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; padding-bottom: 4rem; border-bottom: 1px solid var(--border); }
+    .event-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .event-item.rev { direction: rtl; }
+    .event-item.rev > * { direction: ltr; }
+    .event-date { font-family: 'JetBrains Mono', monospace; font-size: .68rem; letter-spacing: .2em; color: var(--gold-dim); margin-bottom: .4rem; }
+    .event-badge { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: .62rem; letter-spacing: .15em; padding: .2rem .7rem; background: rgba(184,50,50,0.15); border: 1px solid rgba(184,50,50,0.4); color: #e07070; margin-bottom: 1rem; }
+    .event-badge.win { background: rgba(50,184,100,0.1); border-color: rgba(50,184,100,0.35); color: #60d080; }
+    .event-badge.neu { background: rgba(200,164,74,0.1); border-color: rgba(200,164,74,0.3); color: var(--gold); }
+    .event-title { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.45rem; color: var(--cream); margin-bottom: .8rem; }
+    .event-desc { color: #8a94a8; margin-bottom: 1rem; }
+    .youtube-embed { position: relative; padding-bottom: 56.25%; background: var(--bg); border: 1px solid var(--border); overflow: hidden; }
+    .youtube-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+    .youtube-embed .placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; background: var(--bg3); transition: background .3s; }
+    .youtube-embed .placeholder:hover { background: var(--bg); }
+    .yt-icon { width: 60px; height: 42px; background: #ff0000; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+    .yt-icon::after { content: ''; border-left: 20px solid #fff; border-top: 12px solid transparent; border-bottom: 12px solid transparent; margin-left: 4px; }
+    .placeholder p { font-family: 'Cinzel', serif; font-size: .75rem; letter-spacing: .15em; color: var(--muted); }
+    .no-events-box { border: 1px dashed var(--border); padding: 4rem 2rem; text-align: center; background: var(--bg3); }
+    .no-events-box p { color: var(--muted); font-style: italic; margin-bottom: .4rem; }
+    .yt-cta { display: inline-flex; align-items: center; gap: .7rem; margin-top: 1.5rem; font-family: 'Cinzel', serif; font-size: .72rem; letter-spacing: .18em; color: var(--gold); border: 1px solid var(--border); padding: .65rem 1.6rem; transition: border-color .25s; }
+    .yt-cta:hover { border-color: var(--gold); text-decoration: none; }
+    .yt-pip { display: inline-block; width: 30px; height: 21px; background: #ff0000; border-radius: 5px; position: relative; vertical-align: middle; }
+    .yt-pip::after { content: ''; position: absolute; top: 50%; left: 54%; transform: translate(-50%,-50%); border-left: 9px solid #fff; border-top: 6px solid transparent; border-bottom: 6px solid transparent; }
+
+    /* ── Join ── */
+    #join { background: var(--bg); }
+    .stages { display: flex; flex-direction: column; margin-bottom: 0; }
+    .stage { display: grid; grid-template-columns: 80px 1fr; border: 1px solid var(--border); border-bottom: none; background: var(--bg3); transition: background .25s; }
+    .stage:last-child { border-bottom: 1px solid var(--border); }
+    .stage:hover { background: var(--bg2); }
+    .stage-num { border-right: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Cinzel', serif; font-weight: 900; font-size: 1.8rem; color: var(--gold-dim); padding: 1.5rem; }
+    .stage-body { padding: 1.5rem 2rem; }
+    .stage-label { font-family: 'JetBrains Mono', monospace; font-size: .65rem; letter-spacing: .2em; color: var(--gold); text-transform: uppercase; margin-bottom: .3rem; }
+    .stage-title { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.15rem; color: var(--cream); margin-bottom: .5rem; }
+    .stage-desc { color: #8a94a8; font-size: .95rem; }
+    .stage-detail { margin-top: .6rem; padding: .8rem 1rem; background: rgba(0,0,0,0.2); border-left: 2px solid var(--gold-dim); font-family: 'JetBrains Mono', monospace; font-size: .72rem; color: var(--muted); line-height: 1.8; }
+    code { background: rgba(255,255,255,0.06); padding: .1rem .4rem; font-family: 'JetBrains Mono', monospace; font-size: .8em; color: var(--gold); }
+    .rules-box { border: 1px solid var(--border); background: var(--bg3); padding: 2rem; margin-top: 1.5rem; }
+    .rules-title { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1rem; color: var(--gold); margin-bottom: 1rem; }
+    .rules-list { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+    .rules-list li { display: flex; gap: .8rem; font-size: .9rem; color: var(--muted); }
+    .rules-list li::before { content: '▸'; color: var(--gold-dim); flex-shrink: 0; }
+    .join-note { margin-top: 1.2rem; padding: 1rem 1.5rem; background: rgba(200,164,74,0.05); border: 1px solid rgba(200,164,74,0.15); font-family: 'JetBrains Mono', monospace; font-size: .72rem; color: var(--muted); line-height: 1.9; }
+    .skip-badge { display: inline-flex; align-items: center; gap: .4rem; font-family: 'JetBrains Mono', monospace; font-size: .62rem; letter-spacing: .15em; padding: .2rem .75rem; background: rgba(64,180,120,0.1); border: 1px solid rgba(64,180,120,0.35); color: #50c888; margin-top: .75rem; }
+    .skip-badge::before { content: '✦'; font-size: .6rem; }
+
+    /* ── Channel ── */
+    #channel { background: var(--bg2); }
+    .channel-box { border: 1px solid var(--border); background: var(--bg3); padding: 3rem 2.5rem; display: flex; gap: 2.5rem; align-items: center; }
+    .yt-logo { flex-shrink: 0; width: 80px; height: 56px; background: #ff0000; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+    .yt-logo::after { content: ''; border-left: 28px solid #fff; border-top: 17px solid transparent; border-bottom: 17px solid transparent; margin-left: 6px; }
+    .channel-info h3 { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.3rem; color: var(--cream); margin-bottom: .4rem; }
+    .channel-info p { color: #8a94a8; font-size: .95rem; margin-bottom: 1.2rem; }
+
+    /* ── Reveal ── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Mods ── */
+    #mods { background: var(--bg2); }
+    .mods-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; margin-bottom: 3.5rem; }
+    .mod-card {
+      background: var(--bg); border: 1px solid var(--border);
+      padding: 2rem 1.8rem; position: relative; overflow: hidden;
+      transition: border-color .3s, transform .3s;
+    }
+    .mod-card:hover { border-color: var(--gold-dim); transform: translateY(-4px); }
+    .mod-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+      transform: scaleX(0); transition: transform .4s;
+    }
+    .mod-card:hover::after { transform: scaleX(1); }
+    .mod-icon {
+      width: 48px; height: 48px; border-radius: 10px; margin-bottom: 1.2rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+    .mod-icon.spectator { background: rgba(64,130,200,0.15); border: 1px solid rgba(64,130,200,0.3); }
+    .mod-icon.killlog   { background: rgba(184,50,50,0.15);  border: 1px solid rgba(184,50,50,0.35); }
+    .mod-icon.radar     { background: rgba(50,184,100,0.12); border: 1px solid rgba(50,184,100,0.3); }
+    .mod-icon.ui        { background: rgba(200,164,74,0.1);  border: 1px solid rgba(200,164,74,0.25); }
+    .mod-name { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.05rem; color: var(--cream); margin-bottom: .4rem; }
+    .mod-tag  {
+      display: inline-block; font-family: 'JetBrains Mono', monospace;
+      font-size: .58rem; letter-spacing: .15em; padding: .15rem .55rem;
+      margin-bottom: .8rem;
+    }
+    .mod-tag.blue   { background: rgba(64,130,200,0.1);  border: 1px solid rgba(64,130,200,0.3);  color: #7ab0e8; }
+    .mod-tag.red    { background: rgba(184,50,50,0.1);   border: 1px solid rgba(184,50,50,0.3);   color: #e08080; }
+    .mod-tag.green  { background: rgba(50,184,100,0.1);  border: 1px solid rgba(50,184,100,0.3);  color: #60d090; }
+    .mod-tag.golden { background: rgba(200,164,74,0.1);  border: 1px solid rgba(200,164,74,0.25); color: var(--gold); }
+    .mod-desc { font-size: .92rem; color: #8a94a8; line-height: 1.65; }
+
+    /* UI mod preview */
+    .ui-preview {
+      margin-top: 1rem; border: 1px solid rgba(184,50,50,0.25); border-radius: 4px;
+      background: #0a0a0c; padding: .8rem 1rem; position: relative; overflow: hidden;
+    }
+    .ui-preview::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, #b83232, transparent);
+    }
+    .ui-hp-bar { height: 4px; border-radius: 2px; background: rgba(255,255,255,0.07); margin-bottom: .5rem; }
+    .ui-hp-fill { height: 100%; width: 72%; border-radius: 2px; background: linear-gradient(90deg, #b83232, #e05050); }
+    .ui-row { display: flex; justify-content: space-between; align-items: center; }
+    .ui-label { font-family: 'JetBrains Mono', monospace; font-size: .58rem; color: #b83232; letter-spacing: .12em; }
+    .ui-val   { font-family: 'JetBrains Mono', monospace; font-size: .62rem; color: #e8dfc8; }
+
+    /* CTA banner */
+    .mod-cta-banner {
+      position: relative; overflow: hidden;
+      border: 1px solid var(--border); background: var(--bg3);
+      padding: 3.5rem 3rem;
+      display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center;
+    }
+    .mod-cta-banner::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 100% at 0% 50%, rgba(184,50,50,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .mod-cta-banner::after {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: linear-gradient(to bottom, transparent, var(--crimson), transparent);
+    }
+    .cta-headline { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1.4rem; color: var(--cream); margin-bottom: .6rem; line-height: 1.25; }
+    .cta-sub { color: #8a94a8; font-size: .95rem; margin-bottom: 1.4rem; max-width: 480px; }
+    .cta-buttons { display: flex; gap: .8rem; flex-wrap: wrap; }
+    @media (max-width: 700px) {
+      .mod-cta-banner { grid-template-columns: 1fr; }
+      .cta-deco { display: none; }
+    }
+    .cta-deco {
+      font-family: 'Cinzel', serif; font-weight: 900;
+      font-size: 6rem; line-height: 1; letter-spacing: -.04em;
+      background: linear-gradient(160deg, rgba(232,216,160,0.08), rgba(200,164,74,0.04));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      user-select: none; pointer-events: none;
+    }
+
+    /* ── Footer ── */
+    footer { background: var(--bg); border-top: 1px solid var(--border); padding: 2.5rem 1.5rem; text-align: center; }
+    .footer-logo { font-family: 'Cinzel', serif; font-weight: 900; font-size: 1.8rem; background: linear-gradient(160deg, #e8d8a0, #c8a44a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: .5rem; }
+    footer p { font-size: .8rem; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+    footer a { color: var(--gold-dim); }
+
+    @media (max-width: 768px) {
+      nav ul { display: none; }
+      .nav-discord { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-visual { display: none; }
+      .event-item, .event-item.rev { grid-template-columns: 1fr; direction: ltr; }
+      .channel-box { flex-direction: column; }
+      .stage { grid-template-columns: 56px 1fr; }
+      .stage-num { font-size: 1.3rem; padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="https://github.com/user-attachments/assets/93479b64-232f-4a0c-9798-7069adb91f62" alt="RW" style="height:36px;width:auto;object-fit:contain;filter:drop-shadow(0 0 6px rgba(200,164,74,0.3));">
+    <span>/ Narrow.one</span>
+  </div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#members">Members</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#join">Join</a></li>
+    <li><a href="#clanwar">Clan War</a></li>
+    <li><a href="#mods">Mods</a></li>
+    <li><a href="#channel">Channel</a></li>
+  </ul>
+  <a href="https://discord.gg/bmAzwvfNEV" target="_blank" class="nav-discord">Discord</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tag">NARROW.ONE COMPETITIVE CLAN</div>
+    <div style="margin-bottom:1.2rem;animation:fadeUp .8s .1s ease both;">
+      <img src="https://github.com/user-attachments/assets/93479b64-232f-4a0c-9798-7069adb91f62" alt="RW"
+        style="height:clamp(120px,20vw,200px);width:auto;object-fit:contain;
+               filter:drop-shadow(0 0 32px rgba(200,164,74,0.25)) drop-shadow(0 0 8px rgba(200,164,74,0.15));">
+    </div>
+    <p class="hero-sub">FIGHT TOGETHER &nbsp;·&nbsp; WIN TOGETHER</p>
+    <div class="hero-divider"></div>
+    <p class="hero-desc">We are RW.<br/>Elite archers. One banner. No retreat.</p>
+    <div class="hero-cta">
+      <a href="#about" class="btn">What is RW?</a>
+      <a href="https://discord.gg/bmAzwvfNEV" target="_blank" class="btn btn-discord">Join Discord</a>
+    </div>
+  </div>
+  <div class="arrow-deco"><span></span></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-tag reveal">What is RW?</div>
+        <h2 class="section-title reveal">RW Clan</h2>
+        <div class="gold-line reveal"></div>
+        <p class="reveal">
+          <strong style="color:var(--cream)">RW</strong> is a competitive clan in the browser-based
+          multiplayer archery game <em>Narrow.one</em>. Built around skill, trust, and coordination,
+          we are a community of players who push each other to the highest level the game has to offer.
+        </p>
+        <p class="reveal" style="font-family:'Cinzel',serif;font-size:1rem;color:var(--gold);letter-spacing:.08em;border-left:2px solid var(--gold-dim);padding-left:1.2rem;margin:1.2rem 0;">
+          "Fight together. Win together."
+        </p>
+        <p class="reveal">
+          Under the leadership of <strong style="color:var(--cream)">NubitA</strong>, RW maintains a
+          strict but fair entry process to ensure every member is genuinely committed to the team.
+          If you're ready to prove yourself, the gates are open.
+        </p>
+
+        <div class="about-links reveal">
+          <a href="https://discord.gg/bmAzwvfNEV" target="_blank" class="btn btn-discord">Join Discord</a>
+          <a href="https://www.youtube.com/@RW.N1Clan" target="_blank" class="btn btn-ghost">YouTube Channel</a>
+        </div>
+      </div>
+      <div class="about-visual reveal">
+        <div class="orbit-ring"><div class="orbit-dot"></div></div>
+        <div class="rw-emblem">
+          <img src="https://github.com/user-attachments/assets/93479b64-232f-4a0c-9798-7069adb91f62" alt="RW"
+            style="width:130px;height:auto;object-fit:contain;position:relative;z-index:1;
+                   filter:drop-shadow(0 0 18px rgba(200,164,74,0.3));">
+          <div class="game-name">NARROW.ONE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERS -->
+<section id="members">
+  <div class="container">
+    <div class="section-tag reveal">The Roster</div>
+    <h2 class="section-title reveal">Official Members</h2>
+    <div class="gold-line reveal"></div>
+    <p class="section-lead reveal">Every wolf has a role. Every arrow has a purpose.</p>
+
+    <!-- Leader -->
+    <div class="rank-header rank-leader reveal">❖ Leader</div>
+    <div class="members-leader-row reveal">
+      <div class="member-card ldr">
+        <div class="member-avatar">狐</div>
+        <div class="member-name">7003狐面</div>
+        <div class="member-alias">NubitA</div>
+        <div class="member-role leader">⬛ Leader</div>
+      </div>
+    </div>
+
+    <!-- Subleaders -->
+    <div class="rank-header rank-sub reveal">◽ Subleader</div>
+    <div class="members-sub-row reveal">
+      <div class="member-card sub">
+        <div class="member-avatar">W</div>
+        <div class="member-name">wolfart</div>
+        <div class="member-role sub">◆ Subleader</div>
+      </div>
+      <div class="member-card sub">
+        <div class="member-avatar">Y</div>
+        <div class="member-name">yakitori</div>
+        <div class="member-role sub">◆ Subleader</div>
+      </div>
+    </div>
+
+    <!-- Members -->
+    <div class="rank-header rank-member reveal">◽ Member</div>
+    <div class="members-grid reveal">
+      <div class="member-mini"><div class="mini-avatar">S</div><div class="mini-name">sum whistle</div></div>
+      <div class="member-mini"><div class="mini-avatar">J</div><div class="mini-name">JT</div></div>
+      <div class="member-mini"><div class="mini-avatar">A</div><div class="mini-name">alice</div></div>
+      <div class="member-mini"><div class="mini-avatar">S</div><div class="mini-name">suisei</div></div>
+      <div class="member-mini"><div class="mini-avatar">O</div><div class="mini-name">OSOBA</div></div>
+      <div class="member-mini"><div class="mini-avatar">Z</div><div class="mini-name">ZH</div></div>
+      <div class="member-mini"><div class="mini-avatar">砂</div><div class="mini-name">砂場</div></div>
+      <div class="member-mini"><div class="mini-avatar">7</div><div class="mini-name">7999</div></div>
+      <div class="member-mini"><div class="mini-avatar">5</div><div class="mini-name">5809</div></div>
+      <div class="member-mini"><div class="mini-avatar">M</div><div class="mini-name">MK</div></div>
+      <div class="member-mini"><div class="mini-avatar">T</div><div class="mini-name">takuh</div></div>
+      <div class="member-mini"><div class="mini-avatar">K</div><div class="mini-name">kamikaze</div></div>
+      <div class="member-mini"><div class="mini-avatar">M</div><div class="mini-name">MAKONEKO</div></div>
+      <div class="member-mini"><div class="mini-avatar">H</div><div class="mini-name">hayakunero</div></div>
+      <div class="member-mini"><div class="mini-avatar">P</div><div class="mini-name">penguin</div></div>
+      <div class="member-mini"><div class="mini-avatar">M</div><div class="mini-name">majesty</div></div>
+      <div class="member-mini"><div class="mini-avatar">K</div><div class="mini-name">Kashimo</div></div>
+      <div class="member-mini"><div class="mini-avatar">W</div><div class="mini-name">wurenjun</div></div>
+      <div class="member-mini"><div class="mini-avatar">A</div><div class="mini-name">abcde</div></div>
+      <div class="member-mini"><div class="mini-avatar">C</div><div class="mini-name">cassgeta</div></div>
+      <div class="member-mini"><div class="mini-avatar">N</div><div class="mini-name">Nova</div></div>
+      <div class="member-mini"><div class="mini-avatar">X</div><div class="mini-name">xois</div></div>
+      <div class="member-mini"><div class="mini-avatar">Æ</div><div class="mini-name">-Æ~+β</div></div>
+      <div class="member-mini"><div class="mini-avatar">Y</div><div class="mini-name">yama</div></div>
+      <div class="member-mini"><div class="mini-avatar">H</div><div class="mini-name">Hask</div></div>
+      <div class="member-mini"><div class="mini-avatar">P</div><div class="mini-name">Pekora</div></div>
+      <div class="member-mini"><div class="mini-avatar">K</div><div class="mini-name">Kaname</div></div>
+      <div class="member-mini"><div class="mini-avatar">Y</div><div class="mini-name">yuki</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events">
+  <div class="container">
+    <div class="section-tag reveal">Battle Records</div>
+    <h2 class="section-title reveal">Clan Events</h2>
+    <div class="gold-line reveal"></div>
+    <p class="section-lead reveal">
+      Every event is a chapter in RW's history. Check our YouTube channel for match recordings and highlights.
+    </p>
+
+    <div class="events-list">
+
+      <div class="event-item reveal">
+        <div>
+          <span class="event-badge neu">■ EVENT</span>
+          <h3 class="event-title">RW Clan Event</h3>
+          <p class="event-desc">
+            An official RW clan event recorded and published to the channel.
+            Watch the full match below.
+          </p>
+        </div>
+        <div>
+          <div class="youtube-embed" id="yt-1" data-videoid="52-nan_4WME">
+            <div class="placeholder" onclick="loadYT('yt-1')">
+              <div class="yt-icon"></div>
+              <p>WATCH THE RECAP</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="event-item rev reveal">
+        <div>
+          <span class="event-badge neu">■ EVENT</span>
+          <h3 class="event-title">RW Clan Event</h3>
+          <p class="event-desc">
+            Another official RW clan event. Full match footage available on the channel.
+          </p>
+        </div>
+        <div>
+          <div class="youtube-embed" id="yt-2" data-videoid="ojOhzsPl_GM">
+            <div class="placeholder" onclick="loadYT('yt-2')">
+              <div class="yt-icon"></div>
+              <p>WATCH THE RECAP</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- RW CLAN WAR -->
+<section id="clanwar" style="background:var(--bg);">
+  <div class="container">
+    <div class="section-tag reveal">⚔ Warfare</div>
+    <h2 class="section-title reveal">RW Clan War</h2>
+    <div class="gold-line reveal"></div>
+    <p class="section-lead reveal">
+      The ultimate test of coordination and skill. Watch RW go to war.
+    </p>
+
+    <div class="events-list">
+      <div class="event-item reveal">
+        <div>
+          <div class="event-date">2026 / 03 / 17</div>
+          <span class="event-badge win">▲ VICTORY</span>
+          <h3 class="event-title">RW vs PS</h3>
+          <p class="event-desc">
+            RW faced off against clan PS in a decisive clan war — and came out on top.
+            Watch the full match below.
+          </p>
+          <div style="margin-top:1rem;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.15em;color:var(--gold-dim);margin-bottom:.5rem;">PARTICIPANTS</div>
+            <div style="display:flex;flex-wrap:wrap;gap:.4rem;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:.2rem .65rem;border:1px solid var(--border);color:var(--cream);">wolfart</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:.2rem .65rem;border:1px solid var(--border);color:var(--cream);">hayakunero</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:.2rem .65rem;border:1px solid var(--border);color:var(--cream);">yama</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:.2rem .65rem;border:1px solid var(--border);color:var(--cream);">yuki</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="youtube-embed" id="yt-cw1" data-videoid="g6TBoTVtuw4">
+            <div class="placeholder" onclick="loadYT('yt-cw1')">
+              <div class="yt-icon"></div>
+              <p>WATCH THE WAR</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="event-item rev reveal">
+        <div>
+          <div class="event-date">2025 / 03 / 17</div>
+          <span class="event-badge win">▲ VICTORY</span>
+          <h3 class="event-title">RW vs smiley</h3>
+          <p class="event-desc">
+            RW's earlier clan war against smiley. A convincing victory that laid the foundation
+            for the clan's competitive record.
+          </p>
+          <div style="margin-top:1rem;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.15em;color:var(--gold-dim);margin-bottom:.5rem;">PARTICIPANTS</div>
+            <div style="display:flex;flex-wrap:wrap;gap:.4rem;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:.2rem .65rem;border:1px solid var(--border);color:var(--cream);">7003狐面</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:.2rem .65rem;border:1px solid var(--border);color:var(--cream);">wolfart</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:.2rem .65rem;border:1px solid var(--border);color:var(--cream);">yakitori</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <div style="border:1px solid var(--border);background:var(--bg3);padding:2.5rem 2rem;text-align:center;width:100%;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.2em;color:var(--muted);margin-bottom:.6rem;">NO RECORDING AVAILABLE</div>
+            <div style="font-family:'Cinzel',serif;font-size:.8rem;color:var(--gold-dim);">This match predates the official channel.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO JOIN -->
+<section id="join">
+  <div class="container">
+    <div class="section-tag reveal">Recruitment</div>
+    <h2 class="section-title reveal">How to Join RW</h2>
+    <div class="gold-line reveal"></div>
+    <p class="section-lead reveal">
+      This test is designed to select individuals who possess the skills and reliability
+      befitting an RW member. Open to anyone — prove yourself across all four stages.
+    </p>
+
+    <div class="stages reveal">
+      <div class="stage">
+        <div class="stage-num">1</div>
+        <div class="stage-body">
+          <div class="stage-label">Stage 1</div>
+          <div class="stage-title">Fruit</div>
+          <div class="stage-desc">
+            Take a photo of the fruit at the gatehouse and ping <code>@examiner</code> to report it with the photo.
+          </div>
+          <div class="skip-badge">CN / NV members may skip this stage</div>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">2</div>
+        <div class="stage-body">
+          <div class="stage-label">Stage 2 · TA</div>
+          <div class="stage-title">Speed Flag Capture</div>
+          <div class="stage-desc">
+            Capture the flag in the Arena within <strong style="color:var(--gold)">13 seconds</strong>.
+          </div>
+          <div class="stage-detail">
+            Submit a video to the examiner, or have the examiner accompany you in-game.
+          </div>
+          <div class="skip-badge">CN / NV members may skip this stage</div>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">3</div>
+        <div class="stage-body">
+          <div class="stage-label">Stage 3</div>
+          <div class="stage-title">Skill Assessment — 1v1</div>
+          <div class="stage-desc">
+            Win a <strong style="color:var(--gold)">first-to-10</strong> match versus an <code>@examiner</code>.
+          </div>
+          <div class="stage-detail">
+            Maps: Castle or Arena &nbsp;|&nbsp; Bow: Any &nbsp;|&nbsp; Regeneration limit: 12
+          </div>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">4</div>
+        <div class="stage-body">
+          <div class="stage-label">Stage 4</div>
+          <div class="stage-title">Trustworthiness Assessment</div>
+          <div class="stage-desc">
+            Internal review based on rule violations, communication, and sense of responsibility.
+          </div>
+          <div class="stage-detail">
+            Pass condition: <strong style="color:var(--gold)">60% approval</strong> from current members.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rules-box reveal">
+      <div class="rules-title">⚔ Rules After Admission</div>
+      <ul class="rules-list">
+        <li>Violation of rules or loss of trust may result in a ban after leader and sub-leader review.</li>
+        <li>Rules may be revised depending on clan status.</li>
+      </ul>
+      <div class="join-note">
+        Ready to apply? Head to our Discord server and ask for the <strong style="color:var(--gold)">@examiner</strong> role to begin the test process.
+      </div>
+    </div>
+
+    <div style="margin-top:2rem;text-align:center;" class="reveal">
+      <a href="https://discord.gg/bmAzwvfNEV" target="_blank" class="btn btn-discord" style="font-size:.8rem;padding:.85rem 2.5rem;">
+        Apply via Discord ↗
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- MODS -->
+<section id="mods">
+  <div class="container">
+    <div class="section-tag reveal">Made by RW</div>
+    <h2 class="section-title reveal">RW Mods</h2>
+    <div class="gold-line reveal"></div>
+    <p class="section-lead reveal">
+      Beyond competing, RW builds tools that elevate the Narrow.one experience for everyone.
+      These mods are crafted by RW members — exclusively available to the clan.
+    </p>
+
+    <div class="mods-grid">
+
+      <!-- Spectator MOD -->
+      <div class="mod-card reveal">
+        <div class="mod-icon spectator">👁</div>
+        <div class="mod-name">Spectator MOD</div>
+        <span class="mod-tag blue">OBSERVATION</span>
+        <p class="mod-desc">
+          Watches all players from a third-person perspective and automatically follows them in real time.
+          Perfect for scouting, coaching, or simply enjoying the action from any angle on the field.
+        </p>
+      </div>
+
+      <!-- Kill Log MOD -->
+      <div class="mod-card reveal">
+        <div class="mod-icon killlog">☠</div>
+        <div class="mod-name">Kill Log MOD</div>
+        <span class="mod-tag red">REAL-TIME</span>
+        <p class="mod-desc">
+          Displays a live feed of every kill as it happens — who eliminated who, instantly.
+          Stay on top of the battlefield without missing a single elimination.
+        </p>
+      </div>
+
+      <!-- Ally Position MOD -->
+      <div class="mod-card reveal">
+        <div class="mod-icon radar">⬡</div>
+        <div class="mod-name">Ally Position MOD</div>
+        <span class="mod-tag green">TEAMPLAY</span>
+        <p class="mod-desc">
+          Renders each teammate's avatar and exact distance directly on your screen.
+          Always know where your wolves are — coordinate pushes and retreats with precision.
+        </p>
+      </div>
+
+      <!-- UI MOD -->
+      <div class="mod-card reveal">
+        <div class="mod-icon ui">◈</div>
+        <div class="mod-name">UI MOD</div>
+        <span class="mod-tag golden">COSMETIC</span>
+        <p class="mod-desc">
+          A complete UI reskin built around RW's identity — deep black as the base with sharp
+          red accents for a clean, focused aesthetic that looks as sharp as you play.
+        </p>
+        <!-- mini preview -->
+        <div class="ui-preview">
+          <div class="ui-row" style="margin-bottom:.5rem;">
+            <span class="ui-label">HP</span>
+            <span class="ui-val">72 / 100</span>
+          </div>
+          <div class="ui-hp-bar"><div class="ui-hp-fill"></div></div>
+          <div class="ui-row" style="margin-top:.5rem;">
+            <span class="ui-label">RW UI MOD</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:.55rem;color:rgba(184,50,50,0.6);">■ ACTIVE</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CTA Banner -->
+    <div class="mod-cta-banner reveal">
+      <div>
+        <div class="cta-headline">Want access to every RW mod?</div>
+        <p class="cta-sub">
+          These mods are exclusive to RW members. The only way to get them is to
+          earn your place in the clan. Pass the admission test, join the team —
+          and unlock the full arsenal.
+        </p>
+        <div class="cta-buttons">
+          <a href="#join" class="btn" style="font-size:.72rem;">View Admission Test</a>
+          <a href="https://discord.gg/bmAzwvfNEV" target="_blank" class="btn btn-discord" style="font-size:.72rem;">Join Discord ↗</a>
+        </div>
+      </div>
+      <div class="cta-deco">RW</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- OFFICIAL CHANNEL -->
+<section id="channel">
+  <div class="container">
+    <div class="section-tag reveal">Media</div>
+    <h2 class="section-title reveal">Official Channel</h2>
+    <div class="gold-line reveal"></div>
+    <p class="section-lead reveal">
+      Watch our latest matches, event highlights, and clutch moments on the RW official YouTube channel.
+    </p>
+    <div class="channel-box reveal">
+      <div class="yt-logo"></div>
+      <div class="channel-info">
+        <h3>RW Official Channel</h3>
+        <p>
+          Match recordings, event recaps, and highlight clips from RW's competitive journey across Narrow.one.<br/>
+          Subscribe to stay up to date.
+        </p>
+        <a href="https://www.youtube.com/@RW.N1Clan" target="_blank" class="btn">
+          Visit @RW.N1Clan ↗
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="margin-bottom:.9rem;">
+    <img src="https://github.com/user-attachments/assets/93479b64-232f-4a0c-9798-7069adb91f62" alt="RW"
+      style="height:56px;width:auto;object-fit:contain;filter:drop-shadow(0 0 12px rgba(200,164,74,0.2));opacity:.9;">
+  </div>
+  <p style="margin-bottom:.4rem;">Narrow.one Competitive Clan &nbsp;·&nbsp; © N1-RW</p>
+  <p>
+    <a href="https://discord.gg/bmAzwvfNEV" target="_blank">Discord</a>
+    &nbsp;·&nbsp;
+    <a href="https://www.youtube.com/@RW.N1Clan" target="_blank">YouTube</a>
+  </p>
+  <p style="margin-top:.7rem;font-size:.63rem;letter-spacing:.18em;">FIGHT TOGETHER. WIN TOGETHER.</p>
+</footer>
+
+<script>
+  /* Scroll reveal */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  /* YouTube lazy load */
+  function loadYT(id) {
+    const wrap = document.getElementById(id);
+    const vid = wrap.getAttribute('data-videoid');
+    if (!vid || vid === 'YOUTUBE_VIDEO_ID') { alert('Replace YOUTUBE_VIDEO_ID with a real YouTube video ID.'); return; }
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube.com/embed/${vid}?autoplay=1`;
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    wrap.querySelector('.placeholder').replaceWith(iframe);
+  }
+
+  /* Nav active */
+  const secs = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('nav ul li a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    secs.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.id; });
+    links.forEach(a => { a.style.color = a.getAttribute('href') === `#${cur}` ? 'var(--gold)' : ''; });
+  });
+</script>
+</body>
+</html>
