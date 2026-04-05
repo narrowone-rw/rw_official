@@ -371,6 +371,7 @@
       .channel-box { flex-direction: column; }
       .stage { grid-template-columns: 56px 1fr; }
       .stage-num { font-size: 1.3rem; padding: 1rem; }
+      .discord-join-grid { grid-template-columns: 1fr !important; }
     }
   </style>
 </head>
@@ -437,10 +438,12 @@
         </div>
       </div>
       <div class="about-visual reveal">
-        <div class="orbit-ring"><div class="orbit-dot"></div></div>
-        <div class="rw-emblem">
-          <div class="big-rw">RW</div>
-          <div class="game-name">NARROW.ONE</div>
+        <div style="border:1px solid rgba(88,101,242,0.25);overflow:hidden;line-height:0;">
+          <iframe src="https://discord.com/widget?id=1363835445468725268&theme=dark"
+            width="350" height="500"
+            allowtransparency="true" frameborder="0"
+            sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+            style="display:block;width:100%;"></iframe>
         </div>
       </div>
     </div>
